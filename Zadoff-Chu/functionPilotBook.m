@@ -1,4 +1,4 @@
-function [Phi, BaseSeq] = functionPilotBook(N,q)
+function [Phi, InitSeq] = functionPilotBook(N,q)
 
 %% Description of the Input parameters
 % N:   1 x 1; a desired length of ZC sequences
@@ -21,34 +21,34 @@ q (1,:) {mustBeInteger,mustBeInRange(q,1,N,"exclude-upper"),mustBeUnique(q)}
     end
 
     if N == 2
-        BaseSeqTrun = functionTruncation(N, q); % the one and only way
-        BaseSeq = BaseSeqTrun;
+        InitSeqTrun = functionTruncation(N, q); % the one and only way
+        InitSeq = InitSeqTrun;
     elseif N == 3
-        BaseSeqTrun = functionTruncation(N, q);
-        BaseSeqOrig = functionOriginal(N, q); % a preffered way
-        BaseSeq = BaseSeqOrig;
+        InitSeqTrun = functionTruncation(N, q);
+        BaseSeq = functionBase(N, q); % a preffered way
+        InitSeq = BaseSeq;
     else
-        BaseSeqTrun = functionTruncation(N, q);
-        BaseSeqCycExt = functionCyclicExtending(N, q);
+        InitSeqTrun = functionTruncation(N, q);
+        InitSeqCycExt = functionCyclicExtending(N, q);
            if rem(N,2) == 1
-                BaseSeqOrig = functionOriginal(N, q); % a most preffered way
-                BaseSeq = BaseSeqOrig;
+                BaseSeq = functionBase(N, q); % a most preffered way
+                InitSeq = BaseSeq;
            else
-                BaseSeq = BaseSeqCycExt; % a less preffered way
+                InitSeq = InitSeqCycExt; % a less preffered way
            end
     end
 
-% Creating cyclic shifted sequences from "BaseSeq"
-CyclicShiftedSeq = functionCyclicShifting(BaseSeq); 
+% Creating cyclic shifted sequences from "InitSeq"
+CyclicShiftedSeq = functionCyclicShifting(InitSeq); 
     
 % Creating the pilot book, "Phi" by the concatenation
 if size( CyclicShiftedSeq, 3 ) == 1
-    Phi = [BaseSeq CyclicShiftedSeq];
+    Phi = [InitSeq CyclicShiftedSeq];
 else
     Phi = zeros(length(q), N, N);
-        for k = 1 : size(BaseSeq, 2)
-            Phi(k, :, :) = [BaseSeq(:,k) permute(CyclicShiftedSeq(k, :, :), [2 3 1])]; % a preferred way
-           %Phi(k, :, :) = [BaseSeq(:,k) squeeze(CyclicShiftedSeq(k, :, :))];
+        for k = 1 : size(InitSeq, 2)
+            Phi(k, :, :) = [InitSeq(:,k) permute(CyclicShiftedSeq(k, :, :), [2 3 1])]; % a preferred way
+           %Phi(k, :, :) = [InitSeq(:,k) squeeze(CyclicShiftedSeq(k, :, :))];
         end
 end
 
