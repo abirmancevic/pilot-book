@@ -22,19 +22,19 @@ function Z = functionTruncation(NTrun_sf, qTrun)
 %   qTrun (1,:) {mustBeInteger,mustBeInRange(qTrun,1,NTrun_sf,"exclude-upper"),mustBeUnique}
 %       end
 
-%% Generating the truncated base sequence, z_q of the length NTrun_sf (NTrun_sf < N_zc)
+%% Generating the truncated initial sequence, z_q of the length NTrun_sf (NTrun_sf < N_zc)
 
-% Determining a length of the original ZC base sequence, N_zc
+% Determining a length of the base ZC sequence, N_zc
 N_zc = nextprime(NTrun_sf); % choosing the first greater/next prime number of the value NTrun_sf
 % Note: It eliminates the case of a composite number candidates for N_zc
  
-% Creating only a truncated base sequence
+% Creating only a truncated initial sequence
 z_q = zeros(NTrun_sf, 1);
 Z = zeros(NTrun_sf, length(qTrun));
 
 for i = 1 : length(qTrun)
     for n = 0 : NTrun_sf - 1
-                 z_q(n + 1) = exp( -1i * pi * qTrun(i) * (n * (n + 1) ) / N_zc ); % a created base sequence
+                 z_q(n + 1) = exp( -1i * pi * qTrun(i) * (n * (n + 1) ) / N_zc ); % a created initial sequence
     end
     Z(:,i) = z_q;
 end
