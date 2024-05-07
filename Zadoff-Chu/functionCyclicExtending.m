@@ -23,21 +23,21 @@ function Z = functionCyclicExtending(NCycExt_sf, qCycExt)
 %   qCycExt (1,:) {mustBeInteger,mustBeInRange(qCycExt,1,NCycExt_sf,"exclude-upper"),mustBeUnique}
 %       end
 
-%% Generating the cyclic extended base sequence, z_q of the length NCycExt_sf (NCycExt_sf > N_zc)
+%% Generating the cyclic extended initial sequence, z_q of the length NCycExt_sf (NCycExt_sf > N_zc)
 
-% Determining a length of the original ZC base sequence, N_zc
+% Determining a length of the base ZC sequence, N_zc
 N_zc = max(primes(NCycExt_sf - 1)); % choosing the greatest prime (and also an odd) number less than NCycExt_sf 
 % Note: It eliminates the case of an even prime number candidate(s) of N_zc
 % (i.e. N_zc == 2), because of NCycExt_sf >=4.
 
-% Creating only a cyclic extended base sequence
+% Creating only a cyclic extended initial sequence
 z_q = zeros(NCycExt_sf, 1);
 Z = zeros(NCycExt_sf, length(qCycExt));
 
 for i = 1 : length(qCycExt)
     for n = 0 : NCycExt_sf - 1
              hn = mod(n, N_zc);
-             z_q(n + 1) = exp( -1i * pi * qCycExt(i) * (hn * (hn + 1) ) / N_zc ); % a created base sequence
+             z_q(n + 1) = exp( -1i * pi * qCycExt(i) * (hn * (hn + 1) ) / N_zc ); % a created initial sequence
     end
     Z(:,i) = z_q;
 end
